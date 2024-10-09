@@ -38,6 +38,25 @@ And the last one, inner-tunnel<br>
 <code>cp /etc/freeradius/3.2/sites-available/inner-tunnel /etc/freeradius/3.2/sites-available/inner-tunnel.orig <br>
 cp SimpleFreeradius/inner-tunnel /etc/freeradius/3.2/sites-available/inner-tunnel</code><br>
 
+#Create a systemd script for initial login:
+
+<code>mkdir -p /var/run/radiusd/ <br>
+
+echo "
+[Unit]
+Description=FreeRADIUS Service
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/sbin/radiusd -f
+ExecReload=/bin/kill -HUP $MAINPID
+PIDFile=/var/run/radiusd/radiusd.pid
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+" > /etc/systemd/system/freeradius.service</code>
 
 ## Install Mariadb and initial schema
 
