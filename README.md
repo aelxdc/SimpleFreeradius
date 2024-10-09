@@ -37,3 +37,58 @@ cp SimpleFreeradius/radiusd.conf /etc/freeradius/3.2/radiusd.conf </code><br><br
 And the last one, inner-tunnel<br>
 <code>cp /etc/freeradius/3.2/sites-available/inner-tunnel /etc/freeradius/3.2/sites-available/inner-tunnel.orig <br>
 cp SimpleFreeradius/inner-tunnel /etc/freeradius/3.2/sites-available/inner-tunnel</code><br>
+
+
+## Install Mariadb and initial schema
+
+<code> apt install mariadb-server mariadb-client -y </code>
+
+Change the bind address for MariaDb
+<code>systemctl enable mariadb
+sed -i 's/^bind-address\s*=.*/bind-address            = 0.0.0.0/' /etc/mysql/mariadb.conf.d/50-server.cnf
+systemctl restart mariadb</code> <br>
+
+Create the database
+<code>mysql -p
+
+CREATE DATABASE radius CHARACTER SET UTF8 COLLATE UTF8_BIN;
+CREATE USER 'radius'@'%' IDENTIFIED BY 'radpass';
+GRANT ALL PRIVILEGES ON radius.* TO 'radius'@'%';
+QUIT;</code><br>
+
+Import schema<br>
+<code>mysql -u radius -p radius < /etc/freeradius/3.2/mods-config/sql/main/mysql/schema.sql</code> <br>
+
+
+- Populate MariaDB for initial data for testing: <br>
+<code>#### INSERIR DADOS NA TABELA radcheck
+INSERT INTO radcheck (username, attribute, op, value)
+VALUES
+('teste1', 'Cleartext-Password', ':=', 'teste1'),
+('teste2', 'Cleartext-Password', ':=', 'teste2'),
+('teste3', 'Cleartext-Password', ':=', 'teste3'),
+('teste4', 'Cleartext-Password', ':=', 'teste4'),
+('teste5', 'Cleartext-Password', ':=', 'teste5'),
+('teste6', 'Cleartext-Password', ':=', 'teste6'),
+('teste7', 'Cleartext-Password', ':=', 'teste7'),
+('teste8', 'Cleartext-Password', ':=', 'teste8'),
+('teste9', 'Cleartext-Password', ':=', 'teste9'),
+('teste10', 'Cleartext-Password', ':=', 'teste10'),
+('teste11', 'Cleartext-Password', ':=', 'teste11'),
+('teste12', 'Cleartext-Password', ':=', 'teste12'),
+('teste13', 'Cleartext-Password', ':=', 'teste13'),
+('teste14', 'Cleartext-Password', ':=', 'teste14'),
+('teste15', 'Cleartext-Password', ':=', 'teste15'),
+('teste16', 'Cleartext-Password', ':=', 'teste16'),
+('teste17', 'Cleartext-Password', ':=', 'teste17'),
+('teste18', 'Cleartext-Password', ':=', 'teste18'),
+('teste19', 'Cleartext-Password', ':=', 'teste19'),
+('teste20', 'Cleartext-Password', ':=', 'teste20');</code><br>
+
+<code>### INSERIR NA TABELA NAS
+INSERT INTO nas (nasname, shortname, secret, server, description)
+VALUES ('192.168.0.1', 'nas3', 'nastest1234', NULL, 'Test NAS 1');</code><br>
+
+
+
+
