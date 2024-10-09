@@ -1,0 +1,86 @@
+server default {
+listen {
+        type = auth
+        ipaddr = *
+        port = 0
+        limit {
+              max_connections = 16
+              lifetime = 0
+              idle_timeout = 30
+        }
+}
+listen {
+        ipaddr = *
+        port = 0
+        type = acct
+        limit {
+        }
+}
+listen {
+        type = auth
+        port = 0
+        limit {
+              max_connections = 16
+              lifetime = 0
+              idle_timeout = 30
+        }
+}
+listen {
+        ipv6addr = ::
+        port = 0
+        type = acct
+        limit {
+        }
+}
+authorize {
+        filter_username
+        preprocess
+        chap
+        mschap
+        eap {
+                ok = return
+        }
+        sql
+        expiration
+        logintime
+        pap
+        Autz-Type New-TLS-Connection {
+                  ok
+        }
+}
+authenticate {
+        Auth-Type PAP {
+                pap
+        }
+        Auth-Type CHAP {
+                chap
+        }
+        Auth-Type MS-CHAP {
+                mschap
+        }
+        mschap
+        eap
+}
+preacct {
+        preprocess
+        acct_unique
+}
+accounting {
+        sql
+}
+session {
+        sql
+}
+post-auth {
+        update {
+                &reply: += &session-state:
+        }
+        sql
+        remove_reply_message_if_eap
+}
+pre-proxy {
+}
+post-proxy {
+        eap
+}
+}
