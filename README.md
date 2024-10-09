@@ -27,7 +27,7 @@ ln -s /etc/freeradius/3.2/mods-available/sql /etc/freeradius/3.2/mods-enabled/sq
 
 Do the same with sites-avaiable/default file: <br>
 <code>mv /etc/freeradius/3.2/sites-available/default /etc/freeradius/3.2/sites-available/default.orig <br>
-cp SimpleFreeradius/sites-avaiable/default /etc/freeradius/3.2/sites-available/default 
+cp SimpleFreeradius/default /etc/freeradius/3.2/sites-available/default 
 </code> <br> <br>
 
 And to the radiusd.conf <br>
