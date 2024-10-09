@@ -38,7 +38,7 @@ And the last one, inner-tunnel<br>
 <code>cp /etc/freeradius/3.2/sites-available/inner-tunnel /etc/freeradius/3.2/sites-available/inner-tunnel.orig <br>
 cp SimpleFreeradius/inner-tunnel /etc/freeradius/3.2/sites-available/inner-tunnel</code><br>
 
-#Create a systemd script for initial login:
+# Create a systemd script for initial login:
 
 <code>mkdir -p /var/run/radiusd/ <br>
 
