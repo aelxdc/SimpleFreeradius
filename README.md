@@ -22,12 +22,12 @@ make install </code><br>
 Make a backup of the sql module, just in case and copy the simple configuration of the SQL module to the mods-enabled of radius.<br>
 
 <code>mv /etc/freeradius/3.2/mods-available/sql /etc/freeradius/3.2/mods-available/sql.orig <br>
-cp SimpleFreeradius/sql /etc/freeradius/3.2/mods-available/sql <br>
+cp ../sql /etc/freeradius/3.2/mods-available/sql <br>
 ln -s /etc/freeradius/3.2/mods-available/sql /etc/freeradius/3.2/mods-enabled/sql</code><br><br>
 
 Do the same with sites-avaiable/default file: <br>
 <code>mv /etc/freeradius/3.2/sites-available/default /etc/freeradius/3.2/sites-available/default.orig <br>
-cp SimpleFreeradius/default /etc/freeradius/3.2/sites-available/default 
+cp ../default /etc/freeradius/3.2/sites-available/default 
 </code> <br> <br>
 
 And to the radiusd.conf <br>
@@ -36,7 +36,7 @@ cp SimpleFreeradius/radiusd.conf /etc/freeradius/3.2/radiusd.conf </code><br><br
 
 And the last one, inner-tunnel<br>
 <code>cp /etc/freeradius/3.2/sites-available/inner-tunnel /etc/freeradius/3.2/sites-available/inner-tunnel.orig <br>
-cp SimpleFreeradius/inner-tunnel /etc/freeradius/3.2/sites-available/inner-tunnel</code><br>
+cp ../inner-tunnel /etc/freeradius/3.2/sites-available/inner-tunnel</code><br>
 
 # Create a systemd script for initial login:
 
@@ -62,7 +62,7 @@ WantedBy=multi-user.target
 
 <code> apt install mariadb-server mariadb-client -y </code>
 
-Change the bind address for MariaDb
+Change the bind address for MariaDb<br>
 <code>systemctl enable mariadb
 sed -i 's/^bind-address\s*=.*/bind-address            = 0.0.0.0/' /etc/mysql/mariadb.conf.d/50-server.cnf
 systemctl restart mariadb</code> <br>
